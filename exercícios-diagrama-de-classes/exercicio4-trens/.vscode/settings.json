@@ -1,0 +1,6 @@
+{
+    "plantuml.render": "Local",
+    "plantuml.commandArgs": [
+        "-DGRAPHVIZ_DOT=/opt/homebrew/bin/dot"
+    ]
+}

@@ -1,0 +1,55 @@
+title Blackjack
+
+class App{
+    
+}
+
+
+
+class Blackjack{
+    - playBlackjack()
+}
+
+class Baralho{
+    - gerarBaralho()
+    + copas.criarNaipe
+    + ouros.criarNaipe
+    + paus.criarNaipe
+    + espadas.criarNaipe
+
+    - embaralhar()
+    
+    
+}
+
+class Carta{
+    - criarNaipe()
+    
+}
+
+class Dealer{
+    - Mao
+}
+
+class Jogador{
+    - Mao
+}
+
+class Mao{
+    + criarMao
+}
+
+App ..> Blackjack : inicia
+
+Blackjack --> Baralho : usa
+Blackjack --> Jogador : coordena
+Blackjack --> Dealer : coordena
+
+Baralho "1" o-- "0..52" Carta : contém
+Jogador "1" *-- "1" Mao : possui
+Dealer "1" *-- "1" Mao : possui
+Mao "1" o-- "0..*" Carta : contém
+
+
+
+

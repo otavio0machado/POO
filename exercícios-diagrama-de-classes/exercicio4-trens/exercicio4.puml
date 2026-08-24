@@ -1,0 +1,113 @@
+@startuml
+title Exercício 4 — Sistema de Trens
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+hide empty members
+
+class App {
+    - {static} CAPACIDADE_GARAGEM: int = 1000
+    - {static} CAPACIDADE_PATIO: int = 1000
+    - {static} garagemLocomotiva: GaragemLocomotiva
+    - {static} garagemVagoes: GaragemVagoes
+    - {static} patioDeManobras: PatioDeManobras
+    + {static} main(args: String[]): void
+    - {static} exibirMenu(): void
+}
+
+class Entrada <<utilitária>> {
+    - Entrada()
+    ~ {static} lerTexto(in: Scanner, mensagem: String): String
+    ~ {static} lerInteiro(in: Scanner, mensagem: String): int
+    ~ {static} lerDoublePositivo(in: Scanner, mensagem: String): double
+    ~ {static} lerBooleano(in: Scanner, mensagem: String): boolean
+}
+
+class GaragemLocomotiva {
+    - locomotivas: Locomotiva[]
+    - quantidade: int
+    + GaragemLocomotiva(locomotivas: Locomotiva[])
+    + criarLocomotiva(in: Scanner): void
+    + conferirGaragem(): void
+    + estaVazia(): boolean
+    + getQuantidade(): int
+    + retirar(indice: int): Locomotiva
+    - validarIndice(indice: int): void
+}
+
+class GaragemVagoes {
+    - vagoes: Vagao[]
+    - quantidade: int
+    + GaragemVagoes(vagoes: Vagao[])
+    + criarVagao(in: Scanner): void
+    + conferirGaragem(): void
+    + estaVazia(): boolean
+    + getQuantidade(): int
+    + retirar(indice: int): Vagao
+    - validarIndice(indice: int): void
+}
+
+class PatioDeManobras {
+    - trens: Trem[]
+    - quantidade: int
+    + PatioDeManobras(capacidade: int)
+    + criarTrem(in: Scanner, garagemLocomotiva: GaragemLocomotiva, garagemVagoes: GaragemVagoes): void
+    + conferirPatio(): void
+    + getQuantidade(): int
+    - lerIndice(in: Scanner, mensagem: String, totalDeOpcoes: int): int
+}
+
+class Trem {
+    - locomotiva: Locomotiva
+    - vagao: Vagao
+    + Trem(locomotiva: Locomotiva, vagao: Vagao)
+    + getLocomotiva(): Locomotiva
+    + getVagao(): Vagao
+    + toString(): String
+}
+
+class Locomotiva {
+    - nome: String
+    - potencia: double
+    + Locomotiva(nome: String, potencia: double)
+    + getNome(): String
+    + getPotencia(): double
+    + toString(): String
+}
+
+class Vagao {
+    - nome: String
+    - tamanho: double
+    - climatizado: boolean
+    + Vagao(tamanho: double, climatizado: boolean, nome: String)
+    + getNome(): String
+    + getTamanho(): double
+    + isClimatizado(): boolean
+    + toString(): String
+}
+
+App --> "1" GaragemLocomotiva
+App --> "1" GaragemVagoes
+App --> "1" PatioDeManobras
+App ..> Entrada : lê dados
+
+GaragemLocomotiva "1" o-- "0..1000" Locomotiva : armazena
+GaragemVagoes "1" o-- "0..1000" Vagao : armazena
+PatioDeManobras "1" o-- "0..1000" Trem : armazena
+
+PatioDeManobras ..> GaragemLocomotiva : retira locomotiva
+PatioDeManobras ..> GaragemVagoes : retira vagão
+PatioDeManobras ..> Entrada : escolhe veículos
+GaragemLocomotiva ..> Entrada : cadastra
+GaragemVagoes ..> Entrada : cadastra
+
+Trem "0..1" --> "1" Locomotiva : utiliza
+Trem "0..1" --> "1" Vagao : utiliza
+
+note bottom of Trem
+  Ao criar um trem, uma locomotiva e um vagão
+  são retirados das respectivas garagens e o
+  novo trem é armazenado no pátio de manobras.
+end note
+
+@enduml

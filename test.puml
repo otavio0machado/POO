@@ -1,0 +1,11 @@
+title Conta Bancaria
+class pumlTest {
+    + otavioMetodo: void
+}
+
+class pumlTest2 {
+    + otavioMetodo2: static void
+}
+
+pumlTest --> pumlTest2
+
