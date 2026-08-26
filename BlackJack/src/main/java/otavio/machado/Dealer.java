@@ -1,13 +1,17 @@
 package otavio.machado;
 
-import java.util.ArrayList;
-
 public class Dealer {
-    Mao mao = new Mao();
+    private final Mao mao;
 
-    public Dealer(){
-        
+    public Dealer() {
+        this.mao = new Mao();
     }
 
+    public Mao getMao() {
+        return mao;
+    }
 
+    public boolean deveComprar() {
+        return mao.calcularPontuacao() < 17;
+    }
 }

@@ -1,14 +1,25 @@
 package otavio.machado;
 
-import java.util.ArrayList;
-
 public class Jogador {
-    String nome;
+    private final String nome;
+    private final Mao mao;
 
+    public Jogador(String nome) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException(
+                "O nome do jogador não pode ser nulo ou vazio"
+            );
+        }
 
-    public Jogador(String nome){
-        this.nome = nome;
-        Mao mao = new Mao();
+        this.nome = nome.trim();
+        this.mao = new Mao();
     }
-    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public Mao getMao() {
+        return mao;
+    }
 }

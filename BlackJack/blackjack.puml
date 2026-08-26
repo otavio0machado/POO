@@ -1,55 +1,146 @@
-title Blackjack
+@startuml
 
-class App{
-    
+title Blackjack - Diagrama de Classes
+
+class App {
+    + main(String[] args): void
+    + menu(): void
+    + playBlackjack(String nome): void
 }
 
+class Blackjack {
+    - baralho: Baralho
+    - jogador: Jogador
+    - dealer: Dealer
+    - estado: EstadoRodada
+    - resultado: ResultadoRodada
 
-
-class Blackjack{
-    - playBlackjack()
+    + Blackjack(Baralho, Jogador, Dealer)
+    + iniciar(): void
+    + distribuirCartasIniciais(): void
+    + pedirCartaJogador(): Carta
+    + pararJogador(): void
+    + avancarTurnoDealer(): Optional<Carta>
+    + executarTurnoDealer(): void
+    + getEstado(): EstadoRodada
+    + getResultado(): ResultadoRodada
 }
 
-class Baralho{
-    - gerarBaralho()
-    + copas.criarNaipe
-    + ouros.criarNaipe
-    + paus.criarNaipe
-    + espadas.criarNaipe
+class Baralho {
+    - cartas: List<Carta>
 
-    - embaralhar()
-    
-    
+    + Baralho()
+    + Baralho(List<Carta>)
+    + embaralhar(): void
+    + embaralhar(Random): void
+    + comprar(): Carta
+    + estaVazio(): boolean
+    + getCartas(): List<Carta>
+    + getQuantidadeCartas(): int
 }
 
-class Carta{
-    - criarNaipe()
-    
+class Carta {
+    - valor: ValorCarta
+    - naipe: Naipe
+
+    + Carta(ValorCarta, Naipe)
+    + Carta(String, Naipe)
+    + getValor(): ValorCarta
+    + getValorNominal(): String
+    + getNaipe(): Naipe
 }
 
-class Dealer{
-    - Mao
+enum ValorCarta {
+    AS
+    DOIS
+    TRES
+    QUATRO
+    CINCO
+    SEIS
+    SETE
+    OITO
+    NOVE
+    DEZ
+    VALETE
+    DAMA
+    REI
+
+    + getSimbolo(): String
+    + getValorBase(): int
+    + ehAs(): boolean
 }
 
-class Jogador{
-    - Mao
+enum Naipe {
+    COPAS
+    OUROS
+    PAUS
+    ESPADAS
+
+    + getSimbolo(): String
 }
 
-class Mao{
-    + criarMao
+class Jogador {
+    - nome: String
+    - mao: Mao
+
+    + Jogador(String)
+    + getNome(): String
+    + getMao(): Mao
 }
 
-App ..> Blackjack : inicia
+class Dealer {
+    - mao: Mao
 
-Blackjack --> Baralho : usa
+    + Dealer()
+    + getMao(): Mao
+    + deveComprar(): boolean
+}
+
+class Mao {
+    - cartas: List<Carta>
+
+    + Mao()
+    + adicionarCarta(Carta): void
+    + getCartas(): List<Carta>
+    + getQuantidadeCartas(): int
+    + calcularPontuacao(): int
+    + estourou(): boolean
+    + temVinteEUm(): boolean
+    + temBlackjackNatural(): boolean
+    + ehMacia(): boolean
+}
+
+enum EstadoRodada {
+    CRIADA
+    CARTAS_DISTRIBUIDAS
+    TURNO_DO_JOGADOR
+    TURNO_DO_DEALER
+    FINALIZADA
+}
+
+enum ResultadoRodada {
+    BLACKJACK_JOGADOR
+    BLACKJACK_DEALER
+    EMPATE_COM_BLACKJACK
+    VITORIA_JOGADOR
+    VITORIA_DEALER
+    EMPATE
+    ESTOURO_JOGADOR
+    ESTOURO_DEALER
+}
+
+App ..> Blackjack : conduz
+Blackjack --> Baralho : coordena
 Blackjack --> Jogador : coordena
 Blackjack --> Dealer : coordena
+Blackjack --> EstadoRodada
+Blackjack --> ResultadoRodada
 
-Baralho "1" o-- "0..52" Carta : contém
-Jogador "1" *-- "1" Mao : possui
-Dealer "1" *-- "1" Mao : possui
-Mao "1" o-- "0..*" Carta : contém
+Baralho "1" *-- "0..52" Carta : cartas restantes
+Carta --> ValorCarta
+Carta --> Naipe
+Jogador "1" *-- "1" Mao
+Dealer "1" *-- "1" Mao
+Mao "1" o-- "0..*" Carta : cartas recebidas
 
-
-
-
+@enduml
